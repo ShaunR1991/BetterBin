@@ -1,0 +1,60 @@
+int cm = 0;
+
+int leftLow = 50;
+int leftHigh = 70;
+
+int rightLow = 100;
+int rightHigh = 110;
+
+int leftLED = 4;
+int rightLED = 2;
+
+//Returns the time taken for the echo round trip to use in distance measurements
+long readUltrasonicDistance(int triggerPin, int echoPin)
+{
+  pinMode(triggerPin, OUTPUT);  // Clear the trigger
+  digitalWrite(triggerPin, LOW);
+  delayMicroseconds(2);
+  // Sets the trigger pin to HIGH state for 10 microseconds
+  digitalWrite(triggerPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(triggerPin, LOW);
+  pinMode(echoPin, INPUT);
+  // Reads the echo pin, and returns the sound wave travel time in microseconds
+  return pulseIn(echoPin, HIGH);
+}
+
+void setup()
+{
+  Serial.begin(9600);
+
+  pinMode(leftLED, OUTPUT);
+  pinMode(rightLED, OUTPUT);
+}
+
+void loop()
+{
+  //Calculate the distance based on the round trip time
+  cm = 0.01723 * readUltrasonicDistance(7, 6);
+
+  //Print distance to serial
+  Serial.print(cm);
+  Serial.println("cm");
+
+  if (cm >= leftLow && cm <= leftHigh)
+  {
+    digitalWrite(leftLED, HIGH);
+    digitalWrite(rightLED, LOW);
+  }
+  else if (cm >= rightLow && cm <= rightHigh)
+  {
+    digitalWrite(leftLED, LOW);
+    digitalWrite(rightLED, HIGH);
+  }
+  else
+  {
+    digitalWrite(leftLED, LOW);
+    digitalWrite(rightLED, LOW);
+  }
+  delay(100); // Wait for 100 millisecond(s)
+}
