@@ -1,13 +1,18 @@
+#include <Servo.h>
+
+Servo servoLeft;
+Servo servoRight;
+
 int distance = 0;
 
 const int triggerPin = 2;
 const int echoPin = 3;
 
-const int leftLow = 95;
-const int leftHigh = 105;
+const int leftLow = 125;
+const int leftHigh = 135;
 
-const int rightLow = 125;
-const int rightHigh = 135;
+const int rightLow = 95;
+const int rightHigh = 105;
 
 long readUltrasonicDistance(int triggerPin, int echoPin)
 {
@@ -28,6 +33,9 @@ void setup()
     Serial.begin(9600);
     pinMode(triggerPin, OUTPUT);
     pinMode(echoPin, INPUT);
+  
+  	servoLeft.attach(9);
+  	servoRight.attach(10);
 }
 
 void loop()
@@ -39,15 +47,21 @@ void loop()
     {
         Serial.print("Left triggered: ");
         Serial.println(distance);
+      	servoLeft.write(90);
+      	delay(2000);
     }
     else if (distance >= rightLow && distance <= rightHigh)
     {
         Serial.print("Right triggered: ");
         Serial.println(distance);
+      	servoRight.write(90);
+      	delay(2000);
     }
     else
     {
         Serial.println("No trigger");
+      	servoLeft.write(0);
+      	servoRight.write(0);
     }
 
     delay(1000); // Wait for 1 sec
