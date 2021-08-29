@@ -1,0 +1,54 @@
+int distance = 0;
+
+const int triggerPin = 2;
+const int echoPin = 3;
+
+const int leftLow = 95;
+const int leftHigh = 105;
+
+const int rightLow = 125;
+const int rightHigh = 135;
+
+long readUltrasonicDistance(int triggerPin, int echoPin)
+{
+    digitalWrite(triggerPin, LOW);
+    delayMicroseconds(2);
+    // Sets the trigger pin to HIGH state for 10 microseconds
+    digitalWrite(triggerPin, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(triggerPin, LOW);
+    // Reads the echo pin, and returns the sound wave travel time in microseconds
+    return pulseIn(echoPin, HIGH);
+}
+
+int counter;
+
+void setup()
+{
+    Serial.begin(9600);
+    pinMode(triggerPin, OUTPUT);
+    pinMode(echoPin, INPUT);
+}
+
+void loop()
+{
+    distance = 0;
+    distance = 0.01723 * readUltrasonicDistance(triggerPin, echoPin);
+
+    if (distance >= leftLow && distance <= leftHigh)
+    {
+        Serial.print("Left triggered: ");
+        Serial.println(distance);
+    }
+    else if (distance >= rightLow && distance <= rightHigh)
+    {
+        Serial.print("Right triggered: ");
+        Serial.println(distance);
+    }
+    else
+    {
+        Serial.println("No trigger");
+    }
+
+    delay(1000); // Wait for 1 sec
+}
