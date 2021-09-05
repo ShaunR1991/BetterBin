@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+  </head>
+  <body>
+    
+    <h2>Day Query</h2>
+    <p>Enter the number of days before today you want to look at data for</p>
+    <input id="enterXDays" type="text"/><button onclick="sendXDays()">Set Number of Days To Return</button><br>
+    <p id="daysLabel"></p>
+    <p id="xDaysBin1Value"></p>
+    <p id="xDaysBin2Value"></p>
+
+    <h2>Month Query</h2>
+    <p>Enter the month (by number, e.g. 2 for February) you want to look at data for</p>
+    <input id="enterMonth" type="text"/><button onclick="sendMonth()">Set Month to Return</button><br>
+
+    <p id="monthLabel"></p>
+    <p id="monthBin1Value"></p>
+    <p id="monthBin2Value"></p>
+
+    <script>  
+
+    function xDaysBin1(bin1DaysValue) {
+      var bin1Days = document.getElementById("xDaysBin1Value");
+      bin1Days.innerHTML = "Litres of non-recyclable trash generated: " + bin1DaysValue;
+    }
+    function xDaysBin2(bin2DaysValue) {
+      var bin2Days = document.getElementById("xDaysBin2Value");
+      bin2Days.innerHTML = "Litres of recyclable trash generated: " + bin2DaysValue;
+    }
+
+    function monthBin1(bin1MonthValue) {
+      var bin1Month = document.getElementById("monthBin1Value");
+      bin1Month.innerHTML = "Litres of non-recyclable trash generated: " + bin1MonthValue;
+    }
+    function monthBin2(bin2MonthValue) {
+      var bin2Month = document.getElementById("monthBin2Value");
+      bin2Month.innerHTML = "Litres of recyclable trash generated: " + bin2MonthValue;
+    }
+
+    function sendXDays() {
+    var sendValue = document.getElementById("enterXDays").value;
+    google.script.run.setXDays(sendValue);
+    
+    //Wait 3 seconds to update
+    setTimeout(function () {
+      document.getElementById("daysLabel").innerHTML = "Last " + sendValue + " Days of Waste Data";
+      google.script.run.withSuccessHandler(xDaysBin1).returnBinOneXDays();
+      google.script.run.withSuccessHandler(xDaysBin2).returnBinTwoXDays();
+    }, 3000);
+
+    document.getElementById("enterXDays").value = null;
+    }
+
+    function sendMonth() {
+    var sendValue = document.getElementById("enterMonth").value;
+    google.script.run.setMonth(sendValue);
+
+    var monthConv;
+
+    switch(sendValue) {
+      case "1":
+        monthConv = "January";
+        break;
+
+      case "2":
+        monthConv = "February";
+        break;
+      
+      case "3":
+        monthConv = "March";
+        break;
+
+      case "4":
+        monthConv = "April";
+        break;
+
+      case "5":
+        monthConv = "May";
+        break;
+      
+      case "6":
+        monthConv = "June";
+        break;
+
+      case "7":
+        monthConv = "July";
+        break;
+
+      case "8":
+        monthConv = "August";
+        break;
+      
+      case "9":
+        monthConv = "September";
+        break;
+      
+      case "10":
+        monthConv = "October";
+        break;
+
+      case "11":
+        monthConv = "November";
+        break;
+      
+      case "12":
+        monthConv = "December";
+        break;
+
+      default:
+        monthConv = "Invalid Entry";       
+    }
+
+    setTimeout(function () {
+      document.getElementById("monthLabel").innerHTML = monthConv + " Waste Data";
+      google.script.run.withSuccessHandler(monthBin1).returnBinOneMonth();
+      google.script.run.withSuccessHandler(monthBin2).returnBinTwoMonth();
+    }, 3000);
+
+    document.getElementById("enterMonth").value = null;
+    }
+    
+    </script>
+  </body>
+</html>
