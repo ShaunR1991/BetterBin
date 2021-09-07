@@ -1,0 +1,45 @@
+const int triggerPin1 = 2;
+const int echoPin1 = 3;
+
+float distance = 0;
+float full = 0;
+
+long readUltrasonicDistance(int triggerPin, int echoPin)
+{
+    digitalWrite(triggerPin, LOW);
+    delayMicroseconds(2);
+    // Sets the trigger pin to HIGH state for 10 microseconds
+    digitalWrite(triggerPin, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(triggerPin, LOW);
+    // Reads the echo pin, and returns the sound wave travel time in microseconds
+    return pulseIn(echoPin, HIGH);
+}
+
+void setup()
+{
+    Serial.begin(9600);
+    pinMode(triggerPin1, OUTPUT);
+    pinMode(echoPin1, INPUT);
+}
+
+void loop()
+{
+    distance = 0;
+  	full = 0;
+    distance = 0.01723 * readUltrasonicDistance(triggerPin1, echoPin1);
+  
+    if (distance >= 30)
+    {
+      Serial.println("Bin is empty!");
+    }
+  	else
+    {
+      full = (30 - distance) * 100 / 30;
+      Serial.print("Bin is ");
+      Serial.print(full);
+      Serial.println("% full.");
+    }
+  
+    delay(1000); // Wait for 1 sec
+}
