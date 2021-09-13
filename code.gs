@@ -43,15 +43,8 @@ function doGet() {
   }
 
   //Returns the corresponding yearly waste value for input month. Used for chart.
-  function getYearlyWaste() {
-    var yearlyWaste = spreadsheet.getRange(2, 28, 12).getValues();
-    return yearlyWaste;
-  }
-
-  //Returns the corresponding yearly recylcing value for input month. Used for chart.
-  function getYearlyRecycling() {
-    var yearlyRecycling = spreadsheet.getRange(2, 29, 12).getValues();
-    return yearlyRecycling;
+  function getYearlyData(){
+    return spreadsheet.getRange(1, 27, 13, 3).getValues();
   }
 
 function test() {
