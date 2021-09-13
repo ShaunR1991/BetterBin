@@ -2,7 +2,39 @@
 <html>
 
 <head>
-	<base target="_top">
+  <base target="_top">
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript">
+		google.charts.load('current', {'packages':['bar']});
+      google.charts.setOnLoadCallback(getYearlyData);
+
+      function getYearlyData(){
+        google.script.run.withSuccessHandler(drawChart).getYearlyData();
+      }
+
+      function drawChart(dataReturned) {
+        var data = google.visualization.arrayToDataTable(dataReturned);
+
+        var options = {
+          chart: {
+            title: 'Yearly Waste Production',
+            subtitle: 'The Better Bin Waste Tracking for Last 12 Months',
+          },
+          series: {
+            0: { axis: "waste"}
+          },
+          axes: {
+            y: {
+              waste: {label: "Litres of Waste"}
+            }
+          }
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('chart'));
+
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+      }
+	</script>
 </head>
 
 <body>
@@ -127,59 +159,7 @@
     
 		</script>
 
-		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-		<script type="text/javascript">
-			google.charts.load('current', {'packages':['bar']});
-      google.charts.setOnLoadCallback(drawChart);
-
-      var yearlyWaste = []
-      var yearlyRecycling = []
-
-      function wasteVals(data) {
-        //To complete
-      }
-
-      function recycleVal(returnVal) {
-        //To complete
-      }
-
-      google.script.run.withSuccessHandler(wasteVals).getYearlyWaste();
-
-
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Month', 'Waste', 'Recycling'],
-          ['Jan', yearlyWaste[0], yearlyRecycling[0]],
-          ['Feb', yearlyWaste[1], yearlyRecycling[1]],
-          ['Mar', yearlyWaste[2], yearlyRecycling[2]],
-          ['Apr', yearlyWaste[3], yearlyRecycling[3]],
-          ['May', yearlyWaste[4], yearlyRecycling[4]],
-          ['Jun', yearlyWaste[5], yearlyRecycling[5]],
-          ['Jul', yearlyWaste[6], yearlyRecycling[6]],
-          ['Aug', yearlyWaste[7], yearlyRecycling[7]],
-          ['Sep', yearlyWaste[8], yearlyRecycling[8]],
-          ['Oct', yearlyWaste[9], yearlyRecycling[9]],
-          ['Nov', yearlyWaste[10], yearlyRecycling[10]],
-          ['Dec', yearlyWaste[11], yearlyRecycling[11]]
-        ]);
-
-        var options = {
-          chart: {
-            title: 'Yearly Waste Production',
-            subtitle: 'The Better Bin Waste Tracking for Last 12 Months',
-          },
-          bars: 'horizontal'
-        };
-
-        var chart = new google.charts.Bar(document.getElementById('barchart_material'));
-
-        chart.draw(data, google.charts.Bar.convertOptions(options));
-      }
-		</script>
-
-		<div id="barchart_material" style="width: 900px; height: 500px;"></div>
-
-		<div id="output"></div>
+    <div id="chart" style="width: 900px; height: 500px;"></div>
 
 	</body>
 
