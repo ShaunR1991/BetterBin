@@ -3,18 +3,29 @@
 
 <head>
   <base target="_top">
+  <!-- Load the API -->
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<script type="text/javascript">
 		google.charts.load('current', {'packages':['bar']});
+      // Retrieve yearly data from backend on callback
       google.charts.setOnLoadCallback(getYearlyData);
 
+      //Run the success handler to draw chart using data returned from backend function
       function getYearlyData(){
         google.script.run.withSuccessHandler(drawChart).getYearlyData();
       }
 
+      //Use returned data to draw chart
       function drawChart(dataReturned) {
         var data = google.visualization.arrayToDataTable(dataReturned);
 
+        /*
+        Set chart options
+        Title
+        Subtitle
+        Series
+        Axes
+        */
         var options = {
           chart: {
             title: 'Yearly Waste Production',
@@ -30,6 +41,7 @@
           }
         };
 
+        //Create and draw the chart
         var chart = new google.charts.Bar(document.getElementById('chart'));
 
         chart.draw(data, google.charts.Bar.convertOptions(options));
@@ -41,6 +53,7 @@
 
 	<body style="background-color:gray;">
 
+    <!-- Prompt user for the number of historial days they want to look at data for -->
 		<h2>Day Query</h2>
 		<p>Enter the number of days before today you want to look at data for</p>
 		<input id="enterXDays" type="text"/><button onclick="sendXDays()">Set Number of Days To Return</button><br>
@@ -48,6 +61,7 @@
 		<p id="xDaysBin1Value"></p>
 		<p id="xDaysBin2Value"></p>
 
+    <!-- Prompt user for the month they want to look at data for -->
 		<h2>Month Query</h2>
 		<p>Enter the month (by number, e.g. 2 for February) you want to look at data for</p>
 		<input id="enterMonth" type="text"/><button onclick="sendMonth()">Set Month to Return</button><br>
@@ -57,6 +71,8 @@
 		<p id="monthBin2Value"></p>
 
 		<script>
+    //Functions to send and return data to/from backend
+
 			function xDaysBin1(bin1DaysValue) {
       var bin1Days = document.getElementById("xDaysBin1Value");
       bin1Days.innerHTML = "Litres of non-recyclable trash generated: " + bin1DaysValue;
@@ -93,6 +109,7 @@
     var sendValue = document.getElementById("enterMonth").value;
     google.script.run.setMonth(sendValue);
 
+    //Take input and return a string month value
     var monthConv;
 
     switch(sendValue) {
@@ -159,6 +176,7 @@
     
 		</script>
 
+    <!-- Draw chart -->
     <div id="chart" style="width: 900px; height: 500px;"></div>
 
 	</body>
