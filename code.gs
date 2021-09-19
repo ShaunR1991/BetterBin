@@ -47,6 +47,11 @@ function getYearlyData() {
   return spreadsheet.getRange(1, 27, 13, 3).getValues();
 }
 
+//Returns the current status of each bin
+function getBinStatus() {
+  return spreadsheet.getRange(1, 30, 2, 3).getValues();
+}
+
 // function test() {
 //   var e = {};
 //   e.parameter = {};
