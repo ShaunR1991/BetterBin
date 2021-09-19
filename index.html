@@ -6,7 +6,7 @@
 	<!-- Load the API -->
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<script type="text/javascript">
-		google.charts.load('current', {'packages':['bar']});
+		google.charts.load('current', {'packages':['corechart']});
       // Retrieve yearly data from backend on callback
       google.charts.setOnLoadCallback(getYearlyData);
 
@@ -27,32 +27,25 @@
         Axes
         */
         var options = {
-          chart: {
-            title: 'Yearly Waste Production',
-            subtitle: 'The Better Bin Waste Tracking for Last 12 Months',
-          },
-          series: {
-            0: { axis: "waste"}
-          },
-          axes: {
-            y: {
-              waste: {label: "Litres of Waste"}
-            }
-          }
+          title: 'Yearly Waste Production',
+          subtitle: 'The Better Bin Waste Tracking for Last 12 Months',
+          vAxis: {title: 'Litres of Waste'},
+          hAxis: {title: 'Month'},
+          seriesType: 'bars',
         };
 
         //Create and draw the chart
-        var chart = new google.charts.Bar(document.getElementById('chart'));
+        var chart = new google.visualization.ComboChart(document.getElementById('chart'));
 
-        chart.draw(data, google.charts.Bar.convertOptions(options));
+        chart.draw(data, options);
       }
 	</script>
 
-  
+
 	<!-- Load the API -->
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<script type="text/javascript">
-		google.charts.load('current', {'packages':['bar']});
+		google.charts.load('current', {'packages':['corechart']});
       // Retrieve yearly data from backend on callback
       google.charts.setOnLoadCallback(getBinStatus);
 
@@ -73,23 +66,16 @@
         Axes
         */
         var options = {
-          chart: {
-            title: 'Current Bin Status',
-          },
-          series: {
-            0: { axis: "waste"}
-          },
-          axes: {
-            y: {
-              waste: {label: "% Full"}
-            }
-          }
+          title: 'Current Bin Status',
+          vAxis: {title: '% Full', minValue: 0, maxValue: 100},
+          hAxis: {title: 'Bin'},
+          seriesType: 'bars',
         };
 
         //Create and draw the chart
-        var chart = new google.charts.Bar(document.getElementById('status'));
+        var chart = new google.visualization.ComboChart(document.getElementById('status'));
 
-        chart.draw(data, google.charts.Bar.convertOptions(options));
+        chart.draw(data, options);
       }
 	</script>
 </head>
@@ -224,7 +210,7 @@
 		<!-- Draw chart -->
 		<div id="chart" style="width: 900px; height: 500px;"></div>
 
-    <!-- Draw status -->
+		<!-- Draw status -->
 		<div id="status" style="width: 900px; height: 500px;"></div>
 
 	</body>
